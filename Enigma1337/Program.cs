@@ -7,6 +7,7 @@ namespace Enigma1337
         static void Main(string[] args)
         {
             DirectoryCreator.CreateDirectory();
+            HtmlLinkExtractor.ExtractLinksFromWebsite();
         }
     }
 }
