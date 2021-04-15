@@ -6,7 +6,7 @@ namespace Engima1337
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            DirectoryCreator.CreateDirectory();
         }
     }
 }
