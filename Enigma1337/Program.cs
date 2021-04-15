@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Enigma1337
 {
@@ -7,7 +8,9 @@ namespace Enigma1337
         static void Main(string[] args)
         {
             DirectoryCreator.CreateDirectory();
-            HtmlLinkExtractor.ExtractLinksFromWebsite();
+            List<string> unformattedUrls = HtmlLinkExtractor.ExtractLinksFromWebsite();
+            List<string> formattedUrls = LinkFormatter.Format(unformattedUrls);
+
         }
     }
 }
