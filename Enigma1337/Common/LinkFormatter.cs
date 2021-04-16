@@ -9,45 +9,38 @@ namespace Enigma1337
         /// <summary>
         /// Format the links to proper url
         /// </summary>
-        /// <param name="links"> List of links obtained from the webpage</param>
+        /// <param name="link"> Link obtained from the webpage</param>
         /// <remarks>
         /// Removes the unwanted leading slashes and append with https://tretton37.com/ 
         /// to form a proper resource url which we use to download.
         /// </remarks>
-        /// <returns> List of formatted url </returns>
-        public static List<string> Format(List<string> links)
-        {
-            List<string> formattedUrlList = new List<string>();
- 
-            foreach (var url in links)
-            {
+        /// <returns> Formatted url </returns>
+        public static string Format(string link)
+        { 
                 string slashFormattedUrl, appendedUrl;
-                if (url.StartsWith("/"))
+                if (link.StartsWith("/"))
                 {
-                    slashFormattedUrl = url.Remove(0, 1);
+                    slashFormattedUrl = link.Remove(0, 1);
                     appendedUrl = $"https://tretton37.com/{slashFormattedUrl}";
                 }
 
-                else if (url.StartsWith("a"))
+                else if (link.StartsWith("a"))
                 {
-                    appendedUrl = $"https://tretton37.com/{url}";
+                    appendedUrl = $"https://tretton37.com/{link}";
                 }
 
-                else if (url.StartsWith(".."))
+                else if (link.StartsWith(".."))
                 {
-                    slashFormattedUrl = url.Remove(0, 1);
+                    slashFormattedUrl = link.Remove(0, 1);
                     appendedUrl = $"https://tretton37.com/{slashFormattedUrl}";
                 }
 
                 else
                 {
-                    appendedUrl = url;
+                    appendedUrl = link;
                 }
 
-                formattedUrlList.Add(appendedUrl);
-            }
-
-            return formattedUrlList;
+            return appendedUrl;
         }
     }
 }

@@ -11,17 +11,20 @@ namespace Enigma1337
     {
         static void Main(string[] args)
         {
-            List<string> totalUrls = new List<string>();
-            List<string> distinctUrls = new List<string>();
+            Stopwatch stopwatch = new Stopwatch();
+            ConcurrentDictionary<string, List<string>> keyValuePairs = new ConcurrentDictionary<string, List<string>>();
+            stopwatch.Start();
             DirectoryCreator.CreateDirectory();
+            List<string> formattedUrls = new List<string>();
             List<string> routes = ResoureUrlProvider.GetWebsiteRoutes();
-            foreach (var route in routes)
+            Parallel.ForEach(routes, route =>
             {
-                List<string> formattedUrls = ResoureUrlProvider.GetWebpageUrls(route);
-                totalUrls.AddRange(formattedUrls);
-                distinctUrls = totalUrls.Distinct(StringComparer.InvariantCultureIgnoreCase).ToList();
-            }   
+               keyValuePairs.TryAdd("Route", ResoureUrlProvider.GetWebpageUrls(route));
+            });
+            var distinctUrls = keyValuePairs.Values.First().Distinct(StringComparer.InvariantCultureIgnoreCase).ToList();
             ResourceDownloader.Download(distinctUrls);
+            stopwatch.Stop();
+            Console.WriteLine("TotalTime: " + stopwatch.ElapsedMilliseconds);
             Console.ReadLine();
         }
     }

@@ -17,9 +17,8 @@ namespace Enigma1337
         /// <returns> List of website routes </returns>
         public static List<string> GetWebsiteRoutes()
         {
-            var partialRoutes = HtmlLinkExtractor.ExtractLinksFromWebsite(Constants.RouteRegex);
-            var formattedRoutes = LinkFormatter.Format(partialRoutes);
-            var routes = formattedRoutes.FindAll(x => x.Contains(Constants.Website)).Distinct(StringComparer.InvariantCultureIgnoreCase).ToList();
+            var websiteRoutes = HtmlLinkExtractor.ExtractUrlsFromWebsite(Constants.RouteRegex);
+            var routes = websiteRoutes.FindAll(x => x.Contains(Constants.Website)).Distinct(StringComparer.InvariantCultureIgnoreCase).ToList();
             return routes;
         }
 
@@ -33,8 +32,7 @@ namespace Enigma1337
         /// <returns> List of formatted urls </returns>
         public static List<string> GetWebpageUrls( string websiteRoute)
         {
-            List<string> unformattedUrls = HtmlLinkExtractor.ExtractLinksFromWebsite(Constants.LinkRegex, websiteRoute);
-            List<string> formattedUrls = LinkFormatter.Format(unformattedUrls);
+            List<string> formattedUrls = HtmlLinkExtractor.ExtractUrlsFromWebsite(Constants.LinkRegex, websiteRoute);
             return formattedUrls;
         }
     }
