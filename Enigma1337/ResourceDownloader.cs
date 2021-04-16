@@ -27,7 +27,8 @@ namespace Enigma1337
             {
                 ProgressBar.Load(counter, formattedUrls.Count);
                 var filename = formattedUrl.Split('/').Last().Replace('?', '_');
-                webClient.DownloadFile(formattedUrl, DirectoryFinder(formattedUrl, filename));
+                Uri uri = new Uri(formattedUrl);
+                webClient.DownloadFile(uri, DirectoryFinder(formattedUrl, filename));
                 counter++;
             }
             ProgressBar.Stop();
