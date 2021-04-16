@@ -22,15 +22,21 @@ namespace Enigma1337
             foreach (var url in links)
             {
                 string slashFormattedUrl, appendedUrl;
-                if (url.StartsWith('/'))
+                if (url.StartsWith("/"))
                 {
                     slashFormattedUrl = url.Remove(0, 1);
                     appendedUrl = $"https://tretton37.com/{slashFormattedUrl}";
                 }
 
-                else if (url.StartsWith('a'))
+                else if (url.StartsWith("a"))
                 {
                     appendedUrl = $"https://tretton37.com/{url}";
+                }
+
+                else if (url.StartsWith(".."))
+                {
+                    slashFormattedUrl = url.Remove(0, 1);
+                    appendedUrl = $"https://tretton37.com/{slashFormattedUrl}";
                 }
 
                 else
