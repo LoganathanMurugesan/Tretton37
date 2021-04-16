@@ -10,6 +10,7 @@ namespace Enigma1337
             DirectoryCreator.CreateDirectory();
             List<string> unformattedUrls = HtmlLinkExtractor.ExtractLinksFromWebsite();
             List<string> formattedUrls = LinkFormatter.Format(unformattedUrls);
+            ResourceDownloader.Download(formattedUrls);
 
         }
     }
