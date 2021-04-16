@@ -20,14 +20,18 @@ namespace Enigma1337
         /// <returns> Returns nothing</returns>
         public static void Download(List<string> formattedUrls)
         {
-            Console.WriteLine("Started downloading");
+            int counter = 1;
             WebClient webClient = new WebClient();
+            ProgressBar.Start();
             foreach (var formattedUrl in formattedUrls)
             {
+                ProgressBar.Load(counter, formattedUrls.Count);
                 var filename = formattedUrl.Split('/').Last().Replace('?', '_');
                 webClient.DownloadFile(formattedUrl, DirectoryFinder(formattedUrl, filename));
+                counter++;
             }
-            Console.WriteLine("Completed downloading");
+            ProgressBar.Stop();
+            
         }
 
 
