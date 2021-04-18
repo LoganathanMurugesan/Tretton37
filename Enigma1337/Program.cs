@@ -21,33 +21,8 @@ namespace Enigma1337
             AppDomain.CurrentDomain.UnhandledException += GlobalExceptionHandler.HandleTheUnhandled;
 
             //Entry to the application's process
-            Tretton37Downloader(serviceProvider);   
+            Tretton37 tretton37 = new Tretton37(serviceProvider.GetRequiredService<IResourceDownloader>());
+            tretton37.WebsiteDownloader();
         }
-
-
-        /// <summary>
-        /// Tretton37Downloader process the end to end flow.
-        /// </summary>
-        /// <param name="serviceProvider">To inject the dependencies</param>
-        /// <remarks>
-        /// Delegates the tasks including directory creation, urls extraction
-        /// downloading the files and saving them to a local directory.
-        /// </remarks>
-        /// <returns>Returns nothing</returns>
-        static void Tretton37Downloader(IServiceProvider serviceProvider)
-        {
-            ProgressBar.ProcessStarts();
-            List<string> Urls = new List<string>();
-            //Intiates a parallel call between two independent tasks - directory creation and
-            //url extration across the webpages.
-            Parallel.Invoke(
-                () => { Directory.CreateDirectory();},
-                () => { Urls = ResourceUrlProvider.GetUrls().Result;}
-                );
-            //Downloads the files using the urls extracted.
-            Task.WaitAll(serviceProvider.GetService<IResourceDownloader>().DownloadUsingHttpClient(Urls));
-
-        }
-
     }
 }
