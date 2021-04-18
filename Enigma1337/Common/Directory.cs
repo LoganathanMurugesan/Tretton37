@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using System.Linq;
 
 namespace Enigma1337
 {
-    public static class DirectoryCreator
+    public static class Directory
     {
         /// <summary>
         /// Creates local directories
         /// </summary>
         /// <param> No parameters</param>
         /// <remarks>
-        /// Creates the directories of same structure as of the website's file structure
+        ///  Iif not exists, Creates the directories of same structure as of the website's file structure
         /// </remarks>
         /// <returns>Returns nothing</returns>
         public static void CreateDirectory()
@@ -31,10 +31,10 @@ namespace Enigma1337
             {
                 foreach (var directoryPath in DirectoryPaths)
                 {
-                    if (Directory.Exists(directoryPath.Value))
+                    if (System.IO.Directory.Exists(directoryPath.Value))
                         return;
 
-                    DirectoryInfo directory = Directory.CreateDirectory(directoryPath.Value);
+                    DirectoryInfo directory = System.IO.Directory.CreateDirectory(directoryPath.Value);
                     Console.WriteLine($"Created the directory {directoryPath.Value}");
 
                 }
@@ -45,5 +45,29 @@ namespace Enigma1337
                 Console.WriteLine("Failed to create a directory"); ;
             }
         }
+
+
+        /// <summary>
+        /// Finds local directories
+        /// </summary>
+        /// <param name="formattedUrl" name="fileType></param>
+        /// <remarks>
+        /// Finds the local directory based on the filetype and remote folder name.
+        /// </remarks>
+        /// <returns>Returns the local directory that matches</returns>
+        public static string DirectoryFinder(string formattedUrl, string fileType)
+        {
+            var temp1 = formattedUrl.Split('/').Last();
+            var temp2 = formattedUrl.Replace('/' + temp1, "");
+            var remoteFoldername = temp2.Split('/').Last();
+
+            string targetDirectory;
+            if (fileType.Contains(".js") || fileType.Contains(".txt"))
+                targetDirectory = $"{Constants.BaseDirPath}\\js\\{fileType}";
+            else
+                targetDirectory = $"{Constants.BaseDirPath}\\{remoteFoldername}\\{fileType}";
+            return targetDirectory;
+        }
+
     }
 }

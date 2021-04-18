@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
 
 namespace Enigma1337
 {
@@ -16,29 +14,22 @@ namespace Enigma1337
         /// </remarks>
         /// <returns> Formatted url </returns>
         public static string Format(string link)
-        { 
-                string slashFormattedUrl, appendedUrl;
-                if (link.StartsWith("/"))
-                {
-                    slashFormattedUrl = link.Remove(0, 1);
-                    appendedUrl = $"https://tretton37.com/{slashFormattedUrl}";
-                }
+        {
+            string slashFormattedUrl, appendedUrl;
+            if (link.StartsWith("/.."))
+                slashFormattedUrl = link.Remove(0, 4);
+            else if (link.StartsWith("../"))
+                slashFormattedUrl = link.Remove(0, 3);
+            else if (link.StartsWith("a"))
+                slashFormattedUrl = link;
+            else if (link.StartsWith("//"))
+                slashFormattedUrl = link.Remove(0, 2);
+            else if (link.StartsWith("/"))
+                slashFormattedUrl = link.Remove(0, 1);
+            else
+                slashFormattedUrl = string.Empty;
 
-                else if (link.StartsWith("a"))
-                {
-                    appendedUrl = $"https://tretton37.com/{link}";
-                }
-
-                else if (link.StartsWith(".."))
-                {
-                    slashFormattedUrl = link.Remove(0, 1);
-                    appendedUrl = $"https://tretton37.com/{slashFormattedUrl}";
-                }
-
-                else
-                {
-                    appendedUrl = link;
-                }
+            appendedUrl = Constants.Website + slashFormattedUrl;
 
             return appendedUrl;
         }

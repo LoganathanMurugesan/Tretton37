@@ -1,7 +1,7 @@
 ﻿using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace Enigma1337
 {
@@ -15,25 +15,34 @@ namespace Enigma1337
         /// Script tags, link tags and anchor tags are scrutinized to get the Urls using regex.
         /// </remarks>
         /// <returns> List of urls extracted for the particualr page</returns>
-        public static List<string> ExtractUrlsFromWebsite(string regex, string websiteRoute = "https://tretton37.com/")
+        public async static Task<List<string>> ExtractUrlsFromWebsite(string regex, string websiteRoute = Constants.Website)
         {
             List<string> formattedUrlList = new List<string>();
-            var web = new HtmlWeb();
-            var doc = web.Load(websiteRoute);
-            var nodes = doc.DocumentNode.SelectNodes(regex);
+            try
+            {                
+                var web = new HtmlWeb();
+                var doc = await web.LoadFromWebAsync(websiteRoute);
+                var nodes = doc.DocumentNode.SelectNodes(regex);
 
-            foreach (var node in nodes)
-            {
-                string formattedHref;
-                if (node.OriginalName == "link" || node.OriginalName == "a")
-                    formattedHref = node.Attributes["href"].Value;
-                else
-                    formattedHref = node.Attributes["src"].Value;
+                //Extracts the urls based on the original name of the node
+                foreach (var node in nodes)
+                {
+                    string formattedHref;
+                    if (node.OriginalName == "link" || node.OriginalName == "a")
+                        formattedHref = node.Attributes["href"].Value;
+                    else
+                        formattedHref = node.Attributes["src"].Value;
 
-                 var formattedUrl = LinkFormatter.Format(formattedHref);
+                    var formattedUrl = LinkFormatter.Format(formattedHref);
 
-                formattedUrlList.Add(formattedUrl);
+                    formattedUrlList.Add(formattedUrl);
+                }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error from ExtractUrlsFromWebsite()");
+                throw e;                
+            }       
 
             return formattedUrlList;
         }

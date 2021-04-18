@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace Enigma1337
 {
@@ -8,8 +7,7 @@ namespace Enigma1337
     {
         //starts the progress bar and sets the console colors
         public static void Start()
-        {
-            Console.WriteLine("Download Progress");
+        {            
             Console.BackgroundColor = ConsoleColor.Green;
             Console.ForegroundColor = ConsoleColor.Black;
         }
@@ -29,6 +27,12 @@ namespace Enigma1337
         {
             Console.ResetColor();
             Console.WriteLine("Files downloaded successfully");
+        }
+
+        //Indicates the start of the progress.
+        public static void ProcessStarts()
+        {
+            Console.WriteLine(" Download Progress");
         }
 
 
