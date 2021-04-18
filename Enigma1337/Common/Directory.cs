@@ -7,6 +7,8 @@ namespace Enigma1337
 {
     public static class Directory
     {
+        static string baseDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Downloads";
+
         /// <summary>
         /// Creates local directories
         /// </summary>
@@ -16,14 +18,14 @@ namespace Enigma1337
         /// </remarks>
         /// <returns>Returns nothing</returns>
         public static void CreateDirectory()
-        {
+        {            
             Dictionary<string, string> DirectoryPaths = new Dictionary<string, string>()
             {
-                { "assets", "C:\\Users\\Loganathan_M3\\Downloads\\assets" },
-                { "css",    "C:\\Users\\Loganathan_M3\\Downloads\\assets\\css" },
-                { "fonts",  "C:\\Users\\Loganathan_M3\\Downloads\\assets\\fonts" },
-                { "i",      "C:\\Users\\Loganathan_M3\\Downloads\\assets\\i" },
-                { "js",     "C:\\Users\\Loganathan_M3\\Downloads\\assets\\js" }
+                { "assets", baseDirectory+ @"\assets"},
+                { "css",    baseDirectory+ @"\assets\css"},
+                { "fonts",  baseDirectory+ @"\assets\fonts"},
+                { "i",      baseDirectory+ @"\assets\i"},
+                { "js",     baseDirectory+ @"\assets\js"}
 
             };
 
@@ -35,8 +37,6 @@ namespace Enigma1337
                         return;
 
                     DirectoryInfo directory = System.IO.Directory.CreateDirectory(directoryPath.Value);
-                    Console.WriteLine($"Created the directory {directoryPath.Value}");
-
                 }
 
             }
@@ -57,15 +57,24 @@ namespace Enigma1337
         /// <returns>Returns the local directory that matches</returns>
         public static string DirectoryFinder(string formattedUrl, string fileType)
         {
-            var temp1 = formattedUrl.Split('/').Last();
-            var temp2 = formattedUrl.Replace('/' + temp1, "");
-            var remoteFoldername = temp2.Split('/').Last();
+            string targetDirectory = string.Empty;
+            string remoteFoldername = string.Empty;
+            try
+            {
+                var temp1 = formattedUrl.Split('/').Last();
+                var temp2 = formattedUrl.Replace('/' + temp1, "");
+                remoteFoldername = temp2.Split('/').Last();
 
-            string targetDirectory;
-            if (fileType.Contains(".js") || fileType.Contains(".txt"))
-                targetDirectory = $"{Constants.BaseDirPath}\\js\\{fileType}";
-            else
-                targetDirectory = $"{Constants.BaseDirPath}\\{remoteFoldername}\\{fileType}";
+                if (fileType.Contains(".js") || fileType.Contains(".txt"))
+                    targetDirectory = $"{baseDirectory}\\assets\\js\\{fileType}";
+                else
+                    targetDirectory = $"{baseDirectory}\\assets\\{remoteFoldername}\\{fileType}";
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(targetDirectory + remoteFoldername);
+                throw e;
+            }            
             return targetDirectory;
         }
 

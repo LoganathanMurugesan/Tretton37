@@ -64,12 +64,14 @@ namespace Enigma1337
             HttpClient httpClient = new HttpClient();
             try
             {
+                string fileName = string.Empty;
+                string localDirPath = string.Empty;
                 ProgressBar.Start();
                 foreach (var formattedUrl in formattedUrls)
                 {
                     ProgressBar.Load(counter, formattedUrls.Count);
-                    string filename = formattedUrl.Split('/').Last().Replace('?', '_');
-                    string localDirPath = Directory.DirectoryFinder(formattedUrl, filename);
+                    fileName = formattedUrl.Split('/').Last().Replace('?', '_');
+                    localDirPath = Directory.DirectoryFinder(formattedUrl, fileName);
                     HttpResponseMessage response = await httpClient.GetAsync(formattedUrl);
                     var stream = response.Content.ReadAsStreamAsync();
                     using (var fileStream = new FileStream(localDirPath, FileMode.Create, FileAccess.Write))
