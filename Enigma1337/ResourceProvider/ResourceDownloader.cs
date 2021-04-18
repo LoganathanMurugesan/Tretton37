@@ -24,6 +24,7 @@ namespace Enigma1337
         public void DownloadusingWebClient(List<string> formattedUrls)
         {
             int counter = 1;
+            string fileName = string.Empty;
             WebClient webClient = new WebClient();
             try
             {
@@ -31,9 +32,9 @@ namespace Enigma1337
                 foreach (var formattedUrl in formattedUrls)
                 {
                     ProgressBar.Load(counter, formattedUrls.Count);
-                    var filename = formattedUrl.Split('/').Last().Replace('?', '_');
+                    fileName = formattedUrl.Split('/').Last().Replace('?', '_');
                     Uri uri = new Uri(formattedUrl);
-                    string localDirPath = Directory.DirectoryFinder(formattedUrl, filename);
+                    string localDirPath = Directory.DirectoryFinder(formattedUrl, fileName);
                     webClient.DownloadFile(uri, localDirPath);
                     counter++;
                 }
@@ -41,11 +42,9 @@ namespace Enigma1337
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error from DownloadusingWebClient()");
+                Console.WriteLine("Error from DownloadusingWebClient() while downloading the file: " + fileName);
                 throw e;
-            }
-            
-            
+            }    
         }
 
 
@@ -61,17 +60,16 @@ namespace Enigma1337
         public async Task DownloadUsingHttpClient(List<string> formattedUrls)
         {
             int counter = 1;
+            string fileName = string.Empty;
             HttpClient httpClient = new HttpClient();
             try
-            {
-                string fileName = string.Empty;
-                string localDirPath = string.Empty;
+            {    
                 ProgressBar.Start();
                 foreach (var formattedUrl in formattedUrls)
                 {
                     ProgressBar.Load(counter, formattedUrls.Count);
                     fileName = formattedUrl.Split('/').Last().Replace('?', '_');
-                    localDirPath = Directory.DirectoryFinder(formattedUrl, fileName);
+                    string localDirPath = Directory.DirectoryFinder(formattedUrl, fileName);
                     HttpResponseMessage response = await httpClient.GetAsync(formattedUrl);
                     var stream = response.Content.ReadAsStreamAsync();
                     using (var fileStream = new FileStream(localDirPath, FileMode.Create, FileAccess.Write))
@@ -84,11 +82,9 @@ namespace Enigma1337
             }
             catch (Exception e)
             {                
-                Console.WriteLine("Error from DownloadUsingHttpClient()");
+                Console.WriteLine("Error from DownloadUsingHttpClient() while downloading the file: " + fileName);
                 throw e;
             }
-    
-
         }
 
     }

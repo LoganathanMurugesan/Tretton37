@@ -15,11 +15,20 @@ namespace Enigma1337
         //keeps progressing when the downloading the resources
         public static void Load(int counter, int totalUrls)
         {
-            var value = ((double)counter / totalUrls) * 100;
-            var percentage = Convert.ToInt32(Math.Round(value, 0));
-            string str = percentage.ToString() + "% ";
-            Console.SetCursorPosition(counter, 1);
-            Console.WriteLine(" " + str.Replace(str, str));
+            try
+            {
+                var value = ((double)counter / totalUrls) * 100;
+                var percentage = Convert.ToInt32(Math.Round(value, 0));
+                string str = percentage.ToString() + "% ";
+                Console.SetCursorPosition(counter, 1);
+                Console.WriteLine(" " + str.Replace(str, str));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error from progress bar");
+                throw e;
+            }
+
         }
 
         //stops the progress bar and reset the console colors

@@ -40,7 +40,6 @@ namespace Enigma1337
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error from ExtractUrlsFromWebsite()");
                 throw e;                
             }       
 

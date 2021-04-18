@@ -28,21 +28,23 @@ namespace Enigma1337
                 { "js",     baseDirectory+ @"\assets\js"}
 
             };
+            string currentDirectory = string.Empty;
 
             try
-            {
+            {                
                 foreach (var directoryPath in DirectoryPaths)
                 {
                     if (System.IO.Directory.Exists(directoryPath.Value))
                         return;
-
-                    DirectoryInfo directory = System.IO.Directory.CreateDirectory(directoryPath.Value);
+                    currentDirectory = directoryPath.Value;
+                    System.IO.Directory.CreateDirectory(directoryPath.Value);
                 }
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Console.WriteLine("Failed to create a directory"); ;
+                Console.WriteLine("Error from CreateDirectory() while creating the directory: " + currentDirectory);
+                throw e;
             }
         }
 
@@ -58,24 +60,24 @@ namespace Enigma1337
         public static string DirectoryFinder(string formattedUrl, string fileType)
         {
             string targetDirectory = string.Empty;
-            string remoteFoldername = string.Empty;
             try
-            {
+            {                
                 var temp1 = formattedUrl.Split('/').Last();
                 var temp2 = formattedUrl.Replace('/' + temp1, "");
-                remoteFoldername = temp2.Split('/').Last();
+                string remoteFoldername = temp2.Split('/').Last();
 
                 if (fileType.Contains(".js") || fileType.Contains(".txt"))
                     targetDirectory = $"{baseDirectory}\\assets\\js\\{fileType}";
                 else
                     targetDirectory = $"{baseDirectory}\\assets\\{remoteFoldername}\\{fileType}";
+
+                return targetDirectory;
             }
             catch (Exception e)
             {
-                Console.WriteLine(targetDirectory + remoteFoldername);
+                Console.WriteLine("Error from DirectoryFinder() while finding the directory: " + targetDirectory);
                 throw e;
             }            
-            return targetDirectory;
         }
 
     }
