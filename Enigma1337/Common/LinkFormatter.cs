@@ -1,5 +1,7 @@
 ﻿
 
+using System;
+
 namespace Enigma1337
 {
     public static class LinkFormatter
@@ -16,22 +18,30 @@ namespace Enigma1337
         public static string Format(string link)
         {
             string slashFormattedUrl, appendedUrl;
-            if (link.StartsWith("/.."))
-                slashFormattedUrl = link.Remove(0, 4);
-            else if (link.StartsWith("../"))
-                slashFormattedUrl = link.Remove(0, 3);
-            else if (link.StartsWith("a"))
-                slashFormattedUrl = link;
-            else if (link.StartsWith("//"))
-                slashFormattedUrl = link.Remove(0, 2);
-            else if (link.StartsWith("/"))
-                slashFormattedUrl = link.Remove(0, 1);
-            else
-                slashFormattedUrl = string.Empty;
+            try
+            {
+                if (link.StartsWith("/.."))
+                    slashFormattedUrl = link.Remove(0, 4);
+                else if (link.StartsWith("../"))
+                    slashFormattedUrl = link.Remove(0, 3);
+                else if (link.StartsWith("a"))
+                    slashFormattedUrl = link;
+                else if (link.StartsWith("//"))
+                    slashFormattedUrl = link.Remove(0, 2);
+                else if (link.StartsWith("/"))
+                    slashFormattedUrl = link.Remove(0, 1);
+                else
+                    slashFormattedUrl = string.Empty;
 
-            appendedUrl = Constants.Website + slashFormattedUrl;
-
-            return appendedUrl;
+                appendedUrl = Constants.Website + slashFormattedUrl;
+                return appendedUrl;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error from Format() while formatting the link: " + link);
+                throw e;
+            } 
+            
         }
     }
 }

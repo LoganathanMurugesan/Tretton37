@@ -19,17 +19,32 @@ namespace Enigma1337
         /// <returns> List of all urls </returns>
         public async static Task<List<string>> GetUrls()
         {
-            List<string> formattedUrls = new List<string>();
-            // Get a list of all routes from the target website
-            List<string> routes = await GetWebsiteRoutes();
-            //Fetch the URLs from each route in the list
-            Parallel.ForEach(routes, route =>
-            {                
-                formattedUrls.AddRange(GetWebpageUrls(route).Result);
-            });
-            var distinctUrls = formattedUrls.Distinct(StringComparer.InvariantCultureIgnoreCase).ToList();
-            distinctUrls.RemoveAll(x => x == null || x == Constants.Website);
-            return distinctUrls;
+              object _obj = new object();
+            try
+            {
+                List<string> formattedUrls = new List<string>();
+                // Get a list of all routes from the target website
+                List<string> routes = await GetWebsiteRoutes();
+                //Fetch the URLs from each route in the list
+                Parallel.ForEach(routes, route =>
+                {
+                    var urls = GetWebpageUrls(route).Result;
+                    //since List<T> is not threadsafe and we are using it inside a parallel process, 
+                    //lock is implemented to ensure the thread safety.
+                    lock (_obj)
+                    {
+                        formattedUrls.AddRange(urls);
+                    }                                    
+                });
+                var distinctUrls = formattedUrls.Distinct(StringComparer.InvariantCultureIgnoreCase).ToList();
+                distinctUrls.RemoveAll(x => x == null || x == Constants.Website);
+                return distinctUrls;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error from GetUrls() while extracting the urls from the website");
+                throw e;
+            } 
         }
         
         /// <summary>
@@ -42,9 +57,17 @@ namespace Enigma1337
         /// <returns> List of website routes </returns>
         public async static Task<List<string>> GetWebsiteRoutes()
         {
-            var websiteRoutes = await HtmlLinkExtractor.ExtractUrlsFromWebsite(Constants.RouteRegex);
-            var routes = websiteRoutes.FindAll(x => x.Contains(Constants.Website)).Distinct(StringComparer.InvariantCultureIgnoreCase).ToList();
-            return routes;
+            try
+            {
+                var websiteRoutes = await HtmlLinkExtractor.ExtractUrlsFromWebsite(Constants.RouteRegex);
+                var routes = websiteRoutes.FindAll(x => x.Contains(Constants.Website)).Distinct(StringComparer.InvariantCultureIgnoreCase).ToList();
+                return routes;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error from GetWebsiteRoutes() while extracting routes from the website");
+                throw e;
+            }
         }
 
         /// <summary>
@@ -57,8 +80,17 @@ namespace Enigma1337
         /// <returns> List of formatted urls </returns>
         public async static Task<List<string>> GetWebpageUrls(string websiteRoute)
         {
-            List<string> formattedUrls = await HtmlLinkExtractor.ExtractUrlsFromWebsite(Constants.LinkRegex, websiteRoute);
-            return formattedUrls;
+            try
+            {
+                List<string> formattedUrls = await HtmlLinkExtractor.ExtractUrlsFromWebsite(Constants.LinkRegex, websiteRoute);
+                return formattedUrls;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error from GetWebpageUrls() while extracting the urls from the particular webpage");
+                throw e;
+            }            
+            
         }
     }
 }
