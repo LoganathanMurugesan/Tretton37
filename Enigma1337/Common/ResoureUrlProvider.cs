@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Enigma1337
@@ -30,11 +31,17 @@ namespace Enigma1337
                 {
                     var urls = GetWebpageUrls(route).Result;
                     //since List<T> is not threadsafe and we are using it inside a parallel process, 
-                    //lock is implemented to ensure the thread safety.
-                    lock (_obj)
+                    //lock is implemented to ensure the thread safety. Monitor is used instead of lock for
+                    //explicitly releasing the lock on the object once the process is completed.
+                    Monitor.Enter(_obj);
+                    try
                     {
                         formattedUrls.AddRange(urls);
-                    }                                    
+                    }
+                    finally
+                    {
+                        Monitor.Exit(_obj);
+                    }
                 });
                 var distinctUrls = formattedUrls.Distinct(StringComparer.InvariantCultureIgnoreCase).ToList();
                 distinctUrls.RemoveAll(x => x == null || x == Constants.Website);
