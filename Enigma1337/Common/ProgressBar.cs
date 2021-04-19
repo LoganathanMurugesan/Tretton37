@@ -35,7 +35,7 @@ namespace Enigma1337
         public static void Stop()
         {
             Console.ResetColor();
-            Console.WriteLine("Files downloaded successfully");
+            Console.WriteLine("Files downloaded and successfully saved under assests in your downloads folder");
         }
 
         //Indicates the start of the progress.
