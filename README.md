@@ -4,7 +4,6 @@ Enigma1337 is a tool built specifically for Tretton37 to extract static content 
 
 ***
 
-***
 
 ### Thought Process
 
@@ -12,7 +11,6 @@ There is a possibility to write this whole application in a single method, but t
 
 ***
 
-***
 
 ### Stories/Features 
 
@@ -20,55 +18,53 @@ There is a possibility to write this whole application in a single method, but t
 
 Local-directory-Creation
 
-***
+
 
 * Html-Link-Extractor
 
-***
+
 
 * Link-Formatter
 
-***
+
 
 * Resource-Downloader
 
-***
+
 
 * Create/Integrate-DirectoryFinder
 
-***
+
 
 * Progress-Bar
 
-***
+
 
 * Traverse-WebPages
 
-***
+
 
 * Modularize-and-Refactor
 
-***
+
 
 * Global-Exception-Handler
 
-***
+
 
 * Abstracting-download-process
 
-***
+
 
 * Adding-Xunit-test-cases
 
-***
+
 
 ***
 
 ### Instructions to install, build and run the application
 
-***
 
-***
 
 * Install visual studio 2019 along with .net core 3.1 .
 
