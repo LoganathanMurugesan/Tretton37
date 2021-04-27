@@ -17,31 +17,51 @@ namespace Enigma1337
         /// <returns> Formatted url </returns>
         public static string Format(string link)
         {
-            string slashFormattedUrl, appendedUrl;
+            string slashFormattedUrl, appendedUrl = string.Empty;
             try
             {
                 if (link.StartsWith("/.."))
+                {
                     slashFormattedUrl = link.Remove(0, 4);
-                else if (link.StartsWith("../"))
-                    slashFormattedUrl = link.Remove(0, 3);
-                else if (link.StartsWith("a"))
-                    slashFormattedUrl = link;
-                else if (link.StartsWith("//"))
-                    slashFormattedUrl = link.Remove(0, 2);
-                else if (link.StartsWith("/"))
-                    slashFormattedUrl = link.Remove(0, 1);
-                else
-                    slashFormattedUrl = string.Empty;
+                    appendedUrl = "https://tretton37.com/" + slashFormattedUrl;
+                }
 
-                appendedUrl = Constants.Website + slashFormattedUrl;
+                else if (link.StartsWith("../"))
+                {
+                    slashFormattedUrl = link.Remove(0, 3);
+                    appendedUrl = "https://tretton37.com/" + slashFormattedUrl;
+                }
+
+                else if (link.StartsWith("a"))
+                {
+                    slashFormattedUrl = link;
+                    appendedUrl = "https://tretton37.com/" + slashFormattedUrl;
+                }
+
+                else if (link.StartsWith("//"))
+                {
+                    slashFormattedUrl = link.Remove(0, 2);
+                    appendedUrl = slashFormattedUrl;
+                }
+
+                else if (link.StartsWith("/"))
+                {
+                    slashFormattedUrl = link.Remove(0, 1);
+                    appendedUrl = "https://tretton37.com/" + slashFormattedUrl;
+                }
+
+                else
+                    appendedUrl = link;
+
+
                 return appendedUrl;
             }
             catch (Exception e)
             {
                 Console.WriteLine("Error from Format() while formatting the link: " + link);
                 throw e;
-            } 
-            
+            }
+
         }
     }
 }
