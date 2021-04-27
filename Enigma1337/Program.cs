@@ -2,6 +2,7 @@
 using Enigma1337.Interface;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -22,7 +23,7 @@ namespace Enigma1337
 
             //Entry to the application's process
             Tretton37 tretton37 = new Tretton37(serviceProvider.GetRequiredService<IResourceDownloader>());
-            tretton37.WebsiteDownloader();
+            tretton37.WebsiteDownloader(new ConcurrentBag<string>(), 0);
         }
     }
 }

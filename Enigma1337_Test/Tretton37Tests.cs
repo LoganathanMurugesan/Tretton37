@@ -2,6 +2,7 @@ using Enigma1337;
 using Enigma1337.Interface;
 using Moq;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Xunit;
 
@@ -17,10 +18,10 @@ namespace Enigma1337_Test
             //Arrange
             Mock<IResourceDownloader> mockResourceDownloader = new Mock<IResourceDownloader>();
             Tretton37 tretton37 = new Tretton37(mockResourceDownloader.Object);
-            mockResourceDownloader.Setup(x => x.DownloadUsingHttpClient(It.IsAny<List<string>>())).Throws(new Exception());
+            mockResourceDownloader.Setup(x => x.DownloadUsingHttpClient(It.IsAny<string>())).Throws(new Exception());
 
             //Act and Assert    
-            Assert.Throws<Exception>(tretton37.WebsiteDownloader);
+            Assert.Throws<Exception>(() => tretton37.WebsiteDownloader(new ConcurrentBag<string>(), 0));
         }
 
         [Fact]
@@ -29,11 +30,11 @@ namespace Enigma1337_Test
             //Arrange
             Mock<IResourceDownloader> mockResourceDownloader = new Mock<IResourceDownloader>();
             Tretton37 tretton37 = new Tretton37(mockResourceDownloader.Object);
-            mockResourceDownloader.Setup(x => x.DownloadUsingHttpClient(It.IsAny<List<string>>())).Verifiable();
+            mockResourceDownloader.Setup(x => x.DownloadUsingHttpClient(It.IsAny<string>())).Verifiable();
 
             //Act and Assert
             //No explicit assertions made, passing test will ensure the funtionality is working as expected.
-            tretton37.WebsiteDownloader();           
+            tretton37.WebsiteDownloader(new ConcurrentBag<string>(), 0);           
         }
     }
 }

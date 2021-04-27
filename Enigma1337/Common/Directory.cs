@@ -2,80 +2,47 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace Enigma1337
 {
     public static class Directory
     {
-        static string baseDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Downloads";
+        static string baseDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Downloads\";
 
         /// <summary>
-        /// Creates local directories
-        /// </summary>
-        /// <param> No parameters</param>
-        /// <remarks>
-        ///  Iif not exists, Creates the directories of same structure as of the website's file structure
-        /// </remarks>
-        /// <returns>Returns nothing</returns>
-        public static void CreateDirectory()
-        {            
-            Dictionary<string, string> DirectoryPaths = new Dictionary<string, string>()
-            {
-                { "assets", baseDirectory+ @"\assets"},
-                { "css",    baseDirectory+ @"\assets\css"},
-                { "fonts",  baseDirectory+ @"\assets\fonts"},
-                { "i",      baseDirectory+ @"\assets\i"},
-                { "js",     baseDirectory+ @"\assets\js"}
-
-            };
-            string currentDirectory = string.Empty;
-
-            try
-            {                
-                foreach (var directoryPath in DirectoryPaths)
-                {
-                    if (System.IO.Directory.Exists(directoryPath.Value))
-                        return;
-                    currentDirectory = directoryPath.Value;
-                    System.IO.Directory.CreateDirectory(directoryPath.Value);
-                }
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error from CreateDirectory() while creating the directory: " + currentDirectory);
-                throw e;
-            }
-        }
-
-
-        /// <summary>
-        /// Finds local directories
+        /// creates local directories
         /// </summary>
         /// <param name="formattedUrl" name="fileType></param>
         /// <remarks>
-        /// Finds the local directory based on the filetype and remote folder name.
+        /// creates and retain the online folder structure.
         /// </remarks>
         /// <returns>Returns the local directory that matches</returns>
-        public static string DirectoryFinder(string formattedUrl, string fileType)
+        public static string CreateLocalDirectory(string url, string fileName)
         {
-            string targetDirectory = string.Empty;
+            StringBuilder path = new StringBuilder(baseDirectory);
             try
-            {                
-                var temp1 = formattedUrl.Split('/').Last();
-                var temp2 = formattedUrl.Replace('/' + temp1, "");
-                string remoteFoldername = temp2.Split('/').Last();
+            {
+                if (!string.IsNullOrEmpty(url))
+                {
+                    List<string> newList = new List<string>();
+                    var list = url.Split("/");
+                    if (url.Contains("https"))
+                        newList = list.Skip(2).SkipLast(1).ToList();
+                    else
+                        newList = list.ToList();
+                    foreach (var item in newList)
+                    {
+                        path.Append(item + '\\');
+                        System.IO.Directory.CreateDirectory(path.ToString());
+                    }
+                }
 
-                if (fileType.Contains(".js") || fileType.Contains(".txt"))
-                    targetDirectory = $"{baseDirectory}\\assets\\js\\{fileType}";
-                else
-                    targetDirectory = $"{baseDirectory}\\assets\\{remoteFoldername}\\{fileType}";
-
-                return targetDirectory;
+                return path.Append(fileName).ToString();
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error from DirectoryFinder() while finding the directory: " + targetDirectory);
+                Console.WriteLine("Error from DirectoryFinder() while finding the directory");
                 throw e;
             }            
         }
