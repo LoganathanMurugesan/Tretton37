@@ -10,6 +10,7 @@ namespace Enigma1337
         {            
             Console.BackgroundColor = ConsoleColor.Green;
             Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("Download Progress");
         }
 
         //keeps progressing when the downloading the resources

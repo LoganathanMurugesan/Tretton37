@@ -15,7 +15,7 @@ namespace Enigma1337
         /// Script tags, link tags and anchor tags are scrutinized to get the Urls using regex.
         /// </remarks>
         /// <returns> List of urls extracted for the particualr page</returns>
-        public static List<string> ExtractUrlsFromWebsite(string regex, string websiteRoute = Constants.Website)
+        public static List<string> ExtractLinkFromWebsite(string regex, string websiteRoute = Constants.Website)
         {
             List<string> formattedUrlList = new List<string>();
             try
