@@ -7,9 +7,10 @@ namespace Enigma1337
     {
         //starts the progress bar and sets the console colors
         public static void Start()
-        {            
+        {
+            Console.WriteLine("Download Progress");
             Console.BackgroundColor = ConsoleColor.Green;
-            Console.ForegroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Black;            
         }
 
         //keeps progressing when the downloading the resources

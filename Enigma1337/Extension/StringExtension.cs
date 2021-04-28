@@ -7,6 +7,7 @@ namespace Enigma1337.Extension
 {
     public static class StringExtension
     {
+
         public static ConcurrentBag<string> AddMultipleItems(this ConcurrentBag<string> concurrentBag, List<string> stringList)
         {
             if (concurrentBag != null && stringList != null)
@@ -28,6 +29,10 @@ namespace Enigma1337.Extension
                 foreach (var item in stringList)
                 {
                     var appendedUrl = item + ".html";
+                    if (appendedUrl == "https://tretton37.com/.html")
+                    {
+                        appendedUrl = "https://tretton37.com/index.html";
+                    }
                     concurrentBag.Add(appendedUrl);
                 }
             }

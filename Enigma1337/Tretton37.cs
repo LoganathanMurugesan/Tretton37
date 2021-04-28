@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Enigma1337.Extension;
 using System.Linq;
 using System;
+using System.Threading.Tasks;
 
 namespace Enigma1337
 {
@@ -19,46 +20,40 @@ namespace Enigma1337
         /// </summary>
         /// <param>/param>
         /// <remarks>
-        /// Delegates the tasks including directory creation, urls extraction
-        /// downloading the files and saving them to a local directory.
+        /// Recursively call itseld unitl all the resources are downloaded.
         /// </remarks>
         /// <returns>Returns nothing</returns>
-        public void WebsiteDownloader(ConcurrentBag<string> dequeuedUrls, int iteration)
+        public void WebsiteDownloader(ConcurrentBag<string> resourceUrlList, int iteration)
         {
-            List<string> dequeuedUrl;
             try
             {
-                if (dequeuedUrls.Count == 0)
+                if (resourceUrlList.Count == 0)
                 {
-                    dequeuedUrls = new ConcurrentBag<string>();
-                    dequeuedUrl = new List<string>();
-
-                    var routesOfTheWebsite = HtmlLinkExtractor.ExtractUrlsFromWebsite("//a[@href]");
+                    ProgressBar.Start();
+                    resourceUrlList = new ConcurrentBag<string>();
+                    var routesOfTheWebsite = HtmlLinkExtractor.ExtractLinkFromWebsite("//a[@href]");
                     var fullQualifiedWebsiteRoutes = routesOfTheWebsite.Where(x => x.StartsWith("https://tretton37.com/")).Distinct().ToList();
-                    dequeuedUrls.AddMultipleItems_WithHtmlExtension(fullQualifiedWebsiteRoutes);
+                    //Adds the fully qualified website routes list to concurrent list after appending .html
+                    resourceUrlList.AddMultipleItems_WithHtmlExtension(fullQualifiedWebsiteRoutes);
 
-                    //Parallel.ForEach(fullQualifiedWebsiteRoutes, route =>
-                    //{
-                    //    var resourceUlrs = ExtractUrlsFromWebsite("//link[@href]|//script[@src]", route);
-                    //    dequeuedUrls.AddMultipleItems(resourceUlrs);
-                    //});
-
-                    foreach (var route in fullQualifiedWebsiteRoutes)
+                    Parallel.ForEach(fullQualifiedWebsiteRoutes, route =>
                     {
-                        var resourceUlrs = HtmlLinkExtractor.ExtractUrlsFromWebsite("//link[@href]|//script[@src]", route);
-                        dequeuedUrls.AddMultipleItems(resourceUlrs);
-                    }
+                        var resourceUlrs = HtmlLinkExtractor.ExtractLinkFromWebsite("//link[@href]|//script[@src]|//img[@src]|//a[@src]|//video[@src]", route);
+                        resourceUrlList.AddMultipleItems(resourceUlrs);
+                    });
 
                 }
-
-                var result = dequeuedUrls;
-                var distinctResult = result.Distinct().ToList();
+                
+                var distinctResult = resourceUrlList.Distinct().ToList();
+                ProgressBar.Load(iteration, distinctResult.Count);
                 _resourceDownloader.DownloadUsingHttpClient(distinctResult[iteration]);
                 iteration++;
                 if (iteration >= distinctResult.Count)
+                {
+                    ProgressBar.Stop();
                     return;
-                Console.WriteLine("Dowloading itertation: " + iteration);
-                WebsiteDownloader(dequeuedUrls, iteration);
+                }
+                WebsiteDownloader(resourceUrlList, iteration);
             }
             catch (Exception e)
             {

@@ -17,9 +17,10 @@ namespace Enigma1337
         /// <returns> Formatted url </returns>
         public static string Format(string link)
         {
-            string slashFormattedUrl, appendedUrl = string.Empty;
+            string slashFormattedUrl;
             try
             {
+                string appendedUrl;
                 if (link.StartsWith("/.."))
                 {
                     slashFormattedUrl = link.Remove(0, 4);
