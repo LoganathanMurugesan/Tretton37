@@ -24,19 +24,19 @@ namespace Enigma1337
                 if (link.StartsWith("/.."))
                 {
                     slashFormattedUrl = link.Remove(0, 4);
-                    appendedUrl = "https://tretton37.com/" + slashFormattedUrl;
+                    appendedUrl = Constants.Website + slashFormattedUrl;
                 }
 
                 else if (link.StartsWith("../"))
                 {
                     slashFormattedUrl = link.Remove(0, 3);
-                    appendedUrl = "https://tretton37.com/" + slashFormattedUrl;
+                    appendedUrl = Constants.Website + slashFormattedUrl;
                 }
 
                 else if (link.StartsWith("a"))
                 {
                     slashFormattedUrl = link;
-                    appendedUrl = "https://tretton37.com/" + slashFormattedUrl;
+                    appendedUrl = Constants.Website + slashFormattedUrl;
                 }
 
                 else if (link.StartsWith("//"))
@@ -48,7 +48,7 @@ namespace Enigma1337
                 else if (link.StartsWith("/"))
                 {
                     slashFormattedUrl = link.Remove(0, 1);
-                    appendedUrl = "https://tretton37.com/" + slashFormattedUrl;
+                    appendedUrl = Constants.Website + slashFormattedUrl;
                 }
 
                 else

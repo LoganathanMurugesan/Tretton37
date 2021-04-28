@@ -20,7 +20,7 @@ namespace Enigma1337
         /// </summary>
         /// <param>/param>
         /// <remarks>
-        /// Recursively call itseld unitl all the resources are downloaded.
+        /// Recursively call itself unitl all the resources are downloaded.
         /// </remarks>
         /// <returns>Returns nothing</returns>
         public void WebsiteDownloader(ConcurrentBag<string> resourceUrlList, int iteration)
@@ -31,14 +31,14 @@ namespace Enigma1337
                 {
                     ProgressBar.Start();
                     resourceUrlList = new ConcurrentBag<string>();
-                    var routesOfTheWebsite = HtmlLinkExtractor.ExtractLinkFromWebsite("//a[@href]");
-                    var fullQualifiedWebsiteRoutes = routesOfTheWebsite.Where(x => x.StartsWith("https://tretton37.com/")).Distinct().ToList();
+                    var routesOfTheWebsite = HtmlLinkExtractor.ExtractLinkFromWebsite(Constants.RouteRegex);
+                    var fullQualifiedWebsiteRoutes = routesOfTheWebsite.Where(x => x.StartsWith(Constants.Website)).Distinct().ToList();
                     //Adds the fully qualified website routes list to concurrent list after appending .html
                     resourceUrlList.AddMultipleItems_WithHtmlExtension(fullQualifiedWebsiteRoutes);
 
                     Parallel.ForEach(fullQualifiedWebsiteRoutes, route =>
                     {
-                        var resourceUlrs = HtmlLinkExtractor.ExtractLinkFromWebsite("//link[@href]|//script[@src]|//img[@src]|//a[@src]|//video[@src]", route);
+                        var resourceUlrs = HtmlLinkExtractor.ExtractLinkFromWebsite(Constants.LinkRegex, route);
                         resourceUrlList.AddMultipleItems(resourceUlrs);
                     });
 
