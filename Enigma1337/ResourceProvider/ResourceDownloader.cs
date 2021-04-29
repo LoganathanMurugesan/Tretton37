@@ -13,7 +13,7 @@ namespace Enigma1337
     {
 
         /// <summary>
-        /// Downloads the resources from website using HttpClient.
+        /// Downloads the resources from website using WebClient.
         /// </summary>
         /// <param name="formattedUrls"> List of formatted urls</param>
         /// <remarks>
@@ -21,7 +21,7 @@ namespace Enigma1337
         /// and saves to their respective local directories.
         /// </remarks>
         /// <returns> Returns nothing</returns>
-        public void DownloadUsingHttpClient(string formattedUrl)
+        public void DownloadUsingWebClient(string formattedUrl)
         {
             string fileName = string.Empty;
             try
@@ -37,7 +37,7 @@ namespace Enigma1337
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error from DownloadUsingHttpClient() while downloading the file: " + fileName);
+                Console.WriteLine("Error from DownloadUsingWebClient() while downloading the file: " + fileName);
                 throw e;
             }
         }

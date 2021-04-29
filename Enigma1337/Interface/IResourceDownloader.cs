@@ -6,6 +6,6 @@ namespace Enigma1337.Interface
 {
     public interface IResourceDownloader
     {
-        void DownloadUsingHttpClient(string formattedUrl);
+        void DownloadUsingWebClient(string formattedUrl);
     }
 }

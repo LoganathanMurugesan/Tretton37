@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Enigma1337.Extension
 {
+    //Extending the ConcurrentBag<string> to add List<string> to it.
     public static class StringExtension
     {
 

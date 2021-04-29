@@ -46,7 +46,7 @@ namespace Enigma1337
                 
                 var distinctResult = resourceUrlList.Distinct().ToList();
                 ProgressBar.Load(iteration, distinctResult.Count);
-                _resourceDownloader.DownloadUsingHttpClient(distinctResult[iteration]);
+                _resourceDownloader.DownloadUsingWebClient(distinctResult[iteration]);
                 iteration++;
                 if (iteration >= distinctResult.Count)
                 {
