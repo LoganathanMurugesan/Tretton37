@@ -21,8 +21,9 @@ namespace Enigma1337
                 var value = ((double)counter / totalUrls) * 100;
                 var percentage = Convert.ToInt32(Math.Round(value, 0));
                 string str = percentage.ToString() + "% ";
-                Console.SetCursorPosition(counter, 1);
+                Console.SetCursorPosition(percentage, 1);
                 Console.WriteLine(" " + str.Replace(str, str));
+
             }
             catch (Exception e)
             {
@@ -36,7 +37,7 @@ namespace Enigma1337
         public static void Stop()
         {
             Console.ResetColor();
-            Console.WriteLine("Files downloaded and successfully saved under assests in your downloads folder");
+            Console.WriteLine("Website downloaded and successfully saved in your downloads folder");
         }
 
         //Indicates the start of the progress.
